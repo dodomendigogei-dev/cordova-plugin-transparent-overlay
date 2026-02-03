@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="cordova-plugin-transparent-overlay"
+        version="1.0.0">
+    
+    <name>Transparent Overlay</name>
+    <description>Plugin para crear overlay transparente con peluches flotantes</description>
+    <author>Dodo Studio</author>
+    <license>MIT</license>
+    
+    <engines>
+        <engine name="cordova" version=">=9.0.0" />
+        <engine name="cordova-android" version=">=8.0.0" />
+    </engines>
+    
+    <js-module src="www/transparent-overlay.js" name="TransparentOverlay">
+        <clobbers target="cordova.plugins.transparentOverlay" />
+    </js-module>
+    
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="TransparentOverlay">
+                <param name="android-package" value="com.dodo.transparentoverlay.TransparentOverlay"/>
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+        
+        <!-- Permisos necesarios -->
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+            <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+            <uses-permission android:name="android.permission.WAKE_LOCK" />
+        </config-file>
+        
+        <!-- Servicio en el manifest -->
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <service
+                android:name="com.dodo.transparentoverlay.OverlayService"
+                android:enabled="true"
+                android:exported="false"
+                android:foregroundServiceType="mediaPlayback" />
+        </config-file>
+        
+        <!-- Archivos fuente Java -->
+        <source-file src="src/android/com/dodo/transparentoverlay/TransparentOverlay.java" 
+                     target-dir="src/com/dodo/transparentoverlay" />
+        <source-file src="src/android/com/dodo/transparentoverlay/OverlayService.java" 
+                     target-dir="src/com/dodo/transparentoverlay" />
+        <source-file src="src/android/com/dodo/transparentoverlay/OverlayView.java" 
+                     target-dir="src/com/dodo/transparentoverlay" />
+        
+        <!-- Recursos -->
+        <resource-file src="src/android/res/drawable/overlay_close.xml" 
+                       target="res/drawable/overlay_close.xml" />
+    </platform>
+</plugin>
